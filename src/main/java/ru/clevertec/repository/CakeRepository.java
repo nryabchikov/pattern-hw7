@@ -1,21 +1,28 @@
 package ru.clevertec.repository;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.common.CakeType;
 import ru.clevertec.entity.CakeEntity;
+import ru.clevertec.factory.CakeEntityFactory;
+import ru.clevertec.factory.CakeEntityFactoryImpl;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public class CakeRepository {
-    private static List<CakeEntity> db = List.of(
-        new CakeEntity(UUID.randomUUID(), "cake1", CakeType.BIG, OffsetDateTime.now()),
-        new CakeEntity(UUID.randomUUID(), "cake2", CakeType.BIG, OffsetDateTime.now()),
-        new CakeEntity(UUID.randomUUID(), "cake3", CakeType.SMALL, OffsetDateTime.now())
+    private final CakeEntityFactory cakeEntityFactory = new CakeEntityFactoryImpl();
+
+    private List<CakeEntity> db = List.of(
+            cakeEntityFactory.createCakeEntity("cake1", CakeType.BIG),
+            cakeEntityFactory.createCakeEntity("cake2", CakeType.BIG),
+            cakeEntityFactory.createCakeEntity("cake3", CakeType.BIG)
     );
+
     public List<CakeEntity> getCakes() {
         return db;
     }
